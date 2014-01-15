@@ -1,0 +1,10 @@
+{
+  "lib/encase/*.rb": {
+    "type": "container",
+    "test": "spec/lib/encase/%s_spec.rb"
+  },
+  "spec/lib/encase/*_spec.rb": {
+    "type": "spec",
+    "alternate": "lib/encase/%s.rb"
+  }
+}
