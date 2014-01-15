@@ -1,6 +1,6 @@
 # Encase
 
-TODO: Write a gem description
+Lightweight IOC Container for ruby.
 
 ## Installation
 
