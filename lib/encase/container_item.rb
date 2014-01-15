@@ -5,8 +5,11 @@ module Encase
     attr_accessor :value
     attr_accessor :reified_value
 
-    def initialize(container, key, value)
+    def initialize(container)
       self.container = container
+    end
+
+    def store(key, value)
       self.key = key
       self.value = value
     end

@@ -13,7 +13,9 @@ module Encase
     }
 
     let(:singleton_item) {
-      SingletonItem.new(container, :lorem, MySingletonClass)
+      s = SingletonItem.new(container)
+      s.store(:lorem, MySingletonClass)
+      s
     }
 
     it 'returns the same object on every fetch' do

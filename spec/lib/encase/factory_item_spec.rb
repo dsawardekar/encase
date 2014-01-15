@@ -13,7 +13,9 @@ module Encase
     }
 
     let(:factory_item) {
-      FactoryItem.new(container, :lorem, MyClass)
+      f = FactoryItem.new(container)
+      f.store(:lorem, MyClass)
+      f
     }
 
     it 'creates a new instance on every fetch' do
