@@ -1,5 +1,8 @@
-require "encase/version"
+require 'encase/version'
+require 'encase/encaseable'
 
 module Encase
-  # Your code goes here...
+  def self.included(base)
+    base.extend Encaseable
+  end
 end
