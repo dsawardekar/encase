@@ -43,6 +43,7 @@ module Encase
     # public api
     def instance
       reify unless reified?
+      inject
       fetch
     end
   end

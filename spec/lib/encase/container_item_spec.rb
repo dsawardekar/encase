@@ -25,9 +25,17 @@ module Encase
       expect(container_item.reified?).to be_true
     end
 
-    it 'applies injection' do
+    it 'applies injection using container' do
       container_item.reify()
       expect(container_item.inject()).to be_true
+    end
+
+    it 'applies injection before returning instance' do
+      container.stub(:inject) do |value|
+        expect(value).to eq(container_item_value_reified)
+      end
+
+      container_item.instance()
     end
 
     it 'returns instance for item' do
