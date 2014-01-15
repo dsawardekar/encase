@@ -54,7 +54,9 @@ module Encase
     let(:container_item_value) { 'lorem' }
     let(:container_item_value_reified) { 'lorem' }
     let(:container_item) {
-      ContainerItem.new(container, container_item_key, container_item_value)
+      c = ContainerItem.new(container)
+      c.store(container_item_key, container_item_value)
+      c
     }
 
     context 'without proc' do
