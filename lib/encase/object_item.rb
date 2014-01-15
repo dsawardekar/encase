@@ -4,11 +4,11 @@ module Encase
   class ObjectItem < ContainerItem
     attr_accessor :injected
 
-    def inject
+    def inject(object)
       if self.injected
         false
       else
-        self.injected = super
+        self.injected = super(object)
       end
     end
   end

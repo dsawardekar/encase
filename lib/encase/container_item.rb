@@ -11,8 +11,8 @@ module Encase
       self.value = value
     end
 
-    def inject
-      self.container.inject(self.reified_value)
+    def inject(object)
+      self.container.inject(object)
     end
 
     def reify
@@ -43,8 +43,10 @@ module Encase
     # public api
     def instance
       reify unless reified?
-      inject
-      fetch
+      object = fetch
+      inject(object)
+
+      object
     end
   end
 end
