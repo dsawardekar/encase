@@ -27,7 +27,7 @@ module Encase
 
     it 'applies injection using container' do
       container_item.reify()
-      expect(container_item.inject()).to be_true
+      expect(container_item.inject(container_item_value_reified)).to be_true
     end
 
     it 'applies injection before returning instance' do
