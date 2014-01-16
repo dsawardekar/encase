@@ -123,5 +123,49 @@ module Encase
       expect(box.mangoes).to eq(20)
       expect(box.oranges).to eq(30)
     end
+
+    context 'Performance', :benchmark => true do
+      require 'benchmark'
+
+      it 'can store 100s of dependencies quickly' do
+        runtime = Benchmark.realtime do
+          container.configure do
+            10000.times do |i|
+              item = "item#{i}"
+              object item.to_sym, item
+            end
+          end
+        end
+
+        expect(runtime).to be < 0.1
+      end
+
+      it 'can lookup 100s of dependencies quickly' do
+        class ClassWithManyDeps
+          include Encase
+
+          100.times do |i|
+            needs "item#{i}".to_sym
+          end
+        end
+
+        container.configure do
+          100.times do |i|
+            item = "item#{i}"
+            object item.to_sym, item
+          end
+
+          factory :lorem, ClassWithManyDeps
+        end
+
+        runtime = Benchmark.realtime do
+          100.times do |i|
+            container.lookup(:lorem)
+          end
+        end
+
+        expect(runtime).to be < 0.1
+      end
+    end
   end
 end
