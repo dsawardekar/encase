@@ -1,4 +1,4 @@
-## Encase [![Build Status][1]][2][![Code Climate][3]][4] [![Dependency Status][5]][6]
+## Encase [![Build Status][1]][2] [![Code Climate][3]][4] [![Dependency Status][5]][6]
 
 ### Lightweight IOC Container for ruby.
 
