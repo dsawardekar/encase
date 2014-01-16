@@ -124,6 +124,37 @@ module Encase
       expect(box.oranges).to eq(30)
     end
 
+    it 'assigns container on injection' do
+      class DummyObjectToBeInjected
+        include Encase
+        needs :lorem
+      end
+
+      container.object(:lorem, 'lorem')
+      container.factory(:dummy, DummyObjectToBeInjected)
+
+      dummy = container.lookup(:dummy)
+      expect(dummy.container).to eq(container)
+    end
+
+    it 'call on_inject hook after injection' do
+      class DummyWithOnInject
+        include Encase
+        needs :lorem
+        attr_accessor :injected
+
+        def on_inject
+          self.injected = true
+        end
+      end
+
+      container.object(:lorem, 'lorem')
+      container.factory(:dummy, DummyWithOnInject)
+
+      dummy = container.lookup(:dummy)
+      expect(dummy.injected).to be_true
+    end
+
     context 'Performance', :benchmark => true do
       require 'benchmark'
 

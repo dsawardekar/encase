@@ -23,6 +23,9 @@ module Encase
           )
         end
 
+        object.container = self if object.respond_to?(:container)
+        object.on_inject() if object.respond_to?(:on_inject)
+
         true
       else
         false
