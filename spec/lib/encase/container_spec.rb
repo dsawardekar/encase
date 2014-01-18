@@ -198,5 +198,40 @@ module Encase
         expect(runtime).to be < 0.1
       end
     end
+
+    context 'Needs with class inheritance' do
+      it 'can recognize needs in parent class' do
+        class MyGrandParent
+          include Encase
+          needs :a
+        end
+
+        class MyParent < MyGrandParent
+          include Encase
+          needs :b
+        end
+
+        class MyChild < MyParent
+          include Encase
+          needs :c
+        end
+
+        class MyGrandChild < MyChild
+        end
+
+        container.configure do
+          object :a, 'A'
+          object :b, 'B'
+          object :c, 'C'
+
+          factory :me, MyGrandChild
+        end
+
+        me = container.lookup(:me)
+        expect(me.a).to eq('A')
+        expect(me.b).to eq('B')
+        expect(me.c).to eq('C')
+      end
+    end
   end
 end

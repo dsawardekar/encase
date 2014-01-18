@@ -16,7 +16,7 @@ module Encase
     def inject(object)
       klass = object.class
       if klass.respond_to?(:needs_to_inject)
-        needs_to_inject = klass.needs_to_inject
+        needs_to_inject = find_needs_to_inject(klass)
         needs_to_inject.each do |need|
           object.instance_variable_set(
             "@#{need}", lookup(need)
@@ -30,6 +30,17 @@ module Encase
       else
         false
       end
+    end
+
+    def find_needs_to_inject(klass)
+      needs = []
+      klass.ancestors.each do |ancestor|
+        if ancestor.respond_to?(:needs_to_inject) && !ancestor.needs_to_inject.nil?
+          needs.concat(ancestor.needs_to_inject)
+        end
+      end
+
+      needs
     end
 
     def register(type, key, value, block)
