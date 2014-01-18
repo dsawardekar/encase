@@ -47,26 +47,32 @@ module Encase
       item = ContainerItemFactory.build(type, self)
       item.store(key, value || block)
       @items[key] = item
+      self
     end
 
     def unregister(key)
       @items.delete(key)
+      self
     end
 
     def clear
       @items.clear
+      self
     end
 
     def object(key, value = nil, &block)
       register('object', key, value, block)
+      self
     end
 
     def factory(key, value = nil, &block)
       register('factory', key, value, block)
+      self
     end
 
     def singleton(key, value = nil, &block)
       register('singleton', key, value, block)
+      self
     end
 
     def lookup(key)
@@ -82,6 +88,7 @@ module Encase
 
     def configure(&block)
       instance_exec(&block)
+      self
     end
 
     def child

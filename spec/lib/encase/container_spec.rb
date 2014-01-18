@@ -155,6 +155,15 @@ module Encase
       expect(dummy.injected).to be_true
     end
 
+    it 'can chain calls' do
+      c = container.object(:a, 'foo')
+      c.object(:b, 'bar')
+      c.factory(:c, Object)
+      c = c.singleton(:d, Object)
+
+      expect(c).to eq(container)
+    end
+
     context 'Performance', :benchmark => true do
       require 'benchmark'
 
