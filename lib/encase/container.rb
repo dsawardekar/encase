@@ -16,7 +16,7 @@ module Encase
     def inject(object)
       klass = object.class
       if klass.respond_to?(:needs_to_inject)
-        needs_to_inject = klass.needs_to_inject
+        needs_to_inject = find_needs_to_inject(klass)
         needs_to_inject.each do |need|
           object.instance_variable_set(
             "@#{need}", lookup(need)
@@ -32,30 +32,47 @@ module Encase
       end
     end
 
+    def find_needs_to_inject(klass)
+      needs = []
+      klass.ancestors.each do |ancestor|
+        if ancestor.respond_to?(:needs_to_inject) && !ancestor.needs_to_inject.nil?
+          needs.concat(ancestor.needs_to_inject)
+        end
+      end
+
+      needs
+    end
+
     def register(type, key, value, block)
       item = ContainerItemFactory.build(type, self)
       item.store(key, value || block)
       @items[key] = item
+      self
     end
 
     def unregister(key)
       @items.delete(key)
+      self
     end
 
     def clear
       @items.clear
+      self
     end
 
     def object(key, value = nil, &block)
       register('object', key, value, block)
+      self
     end
 
     def factory(key, value = nil, &block)
       register('factory', key, value, block)
+      self
     end
 
     def singleton(key, value = nil, &block)
       register('singleton', key, value, block)
+      self
     end
 
     def lookup(key)
@@ -71,6 +88,7 @@ module Encase
 
     def configure(&block)
       instance_exec(&block)
+      self
     end
 
     def child
