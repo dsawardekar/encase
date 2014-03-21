@@ -242,5 +242,34 @@ module Encase
         expect(me.c).to eq('C')
       end
     end
+
+    context 'Nested Container with lazy resolution' do
+      it 'can resolve logger lazily issue #4' do
+        class Logger
+        end
+
+        class MagicLogger
+        end
+
+        class House
+          include Encase
+          needs :logger
+        end
+
+        container = Container.new
+        container.configure do
+          object :logger, Logger.new
+          factory :house, House
+        end
+
+        child = container.child
+        child.configure do
+          object :logger, MagicLogger.new
+        end
+
+        house = child.lookup(:house)
+        expect(house.logger).to be_a(MagicLogger)
+      end
+    end
   end
 end

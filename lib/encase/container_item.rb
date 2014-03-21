@@ -14,8 +14,14 @@ module Encase
       self.value = value
     end
 
-    def inject(object)
-      self.container.inject(object)
+    def inject(object, origin = nil)
+      if origin.nil?
+        container = self.container
+      else
+        container = origin
+      end
+
+      container.inject(object)
     end
 
     def reify
@@ -44,10 +50,10 @@ module Encase
     end
 
     # public api
-    def instance
+    def instance(origin = nil)
       reify unless reified?
       object = fetch
-      inject(object)
+      inject(object, origin)
 
       object
     end

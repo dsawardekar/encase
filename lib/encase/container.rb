@@ -75,12 +75,13 @@ module Encase
       self
     end
 
-    def lookup(key)
+    def lookup(key, origin = nil)
       if contains?(key)
         item = @items[key]
-        item.instance
+        item.instance(origin)
       elsif !parent.nil?
-        parent.lookup(key)
+        origin = self if origin.nil?
+        parent.lookup(key, origin)
       else
         raise KeyError.new("Key:#{key} not found in container.")
       end
